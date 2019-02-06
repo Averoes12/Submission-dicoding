@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Catalog Movie</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="description">Description</string>
+    <string name="judul_film_detail">Judul Film</string>
+    <string name="date_released">Monday ,28January, 2001</string>
+    <string name="judul">Judul</string>
+    <string name="search">Search</string>
+    <string name="search_movie_here">Search Movie Here...</string>
+    <string name="judul_film_item">Judul Film</string>
+    <string name="deskripsi_item">Deskripsi</string>
+    <string name="date_released_item">Monday, 31 January 2018</string>
+
+</resources>
