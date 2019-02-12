@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Catalogue Movie 2.0</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="catalog_movie">Catalog Movie</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="search_movie_here">Search Movie Here..</string>
+    <string name="title">Title</string>
+    <string name="overview">Overview</string>
+    <string name="tanggal_release">tanggal release</string>
+    <string name="popularity">popularity</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="cooming_soon">Cooming Soon</string>
+    <string name="title_detail">Title</string>
+    <string name="rating">Rating</string>
+    <string name="release_date">Release date</string>
+    <string name="overview_detail">Overview</string>
+    <string name="home">Home</string>
+</resources>

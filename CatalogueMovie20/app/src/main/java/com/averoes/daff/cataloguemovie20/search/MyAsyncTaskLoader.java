@@ -1,51 +1,51 @@
-package com.averoes.catalogmovie;
+package com.averoes.daff.cataloguemovie20.search;
 
-import android.content.AsyncTaskLoader;
+import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.BuildConfig;
 import com.loopj.android.http.SyncHttpClient;
 
 import org.json.JSONArray;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MyAsyncTaskLoader extends AsyncTaskLoader<ArrayList<MovieList>> {
+/**
+ * Created by daff on 07/02/19 at 20:18.
+ */
 
-    private ArrayList<MovieList> data;
+public class MyAsyncTaskLoader extends AsyncTaskLoader<ArrayList<MovieItem>> {
+    private ArrayList<MovieItem> list_film;
     private boolean result = false;
 
-    private String mTitleMovie;
+    public String title = "";
 
-    public MyAsyncTaskLoader(final Context context, String titleMovie) {
+    public MyAsyncTaskLoader(final Context context, String title_movie) {
         super(context);
 
         onContentChanged();
-        this.mTitleMovie = titleMovie;
+        this.title = title_movie;
     }
 
     @Override
     protected void onStartLoading() {
         if (takeContentChanged()) {
             forceLoad();
-
         } else if (result) {
-
-            deliverResult(data);
+            deliverResult(list_film);
         }
     }
 
     @Override
-    public void deliverResult(final ArrayList<MovieList> items) {
-        data = items;
+    public void deliverResult(ArrayList<MovieItem> data) {
+        super.deliverResult(data);
+        list_film = data;
         result = true;
-        super.deliverResult(items);
     }
 
     @Override
@@ -53,50 +53,35 @@ public class MyAsyncTaskLoader extends AsyncTaskLoader<ArrayList<MovieList>> {
         super.onReset();
         onStopLoading();
         if (result) {
-            onReleaseResource(data);
-            data = null;
+            onReleaseResource(list_film);
+            list_film = null;
             result = false;
         }
     }
 
-
-    //Tempat isi API KEY
-    private static final String API_KEY = "9428d1de175b89f3fba2af8d0b021de0";
-
-    private void onReleaseResource(ArrayList<MovieList> data) {
+    private void onReleaseResource(ArrayList<MovieItem> list_film) {
     }
 
+    private static final String API_KEY = "9428d1de175b89f3fba2af8d0b021de0";
+    private final String URL = "https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&query=";
 
     @Override
-    public ArrayList<MovieList> loadInBackground() {
-
+    public ArrayList<MovieItem> loadInBackground() {
         SyncHttpClient client = new SyncHttpClient();
 
-        final ArrayList<MovieList> movieLists = new ArrayList<>();
+        final ArrayList<MovieItem> movieItems = new ArrayList<>();
 
-        String url0 = "";
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&query=";
-        String url2 = "https://api.themoviedb.org/3/movie/search?api_key="+API_KEY+"&language=en-US&query="+ mTitleMovie;
-        if (TextUtils.isEmpty(mTitleMovie)){
-            url0 = url;
-        }else {
-
-            url0 = url2;
-        }
-
-        client.get(url2, new AsyncHttpResponseHandler() {
-
+        client.get(URL, new AsyncHttpResponseHandler() {
             @Override
-             public void onStart() {
+            public void onStart() {
                 super.onStart();
-                Log.d("TAG", "MASUK");
                 setUseSynchronousMode(true);
-
+                Log.d("Response", "Log in");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d("Response", "Succes");
+                Log.v("Response", "Succes");
                 try {
 
                     String result = new String(responseBody);
@@ -106,10 +91,9 @@ public class MyAsyncTaskLoader extends AsyncTaskLoader<ArrayList<MovieList>> {
                     for (int i = 0; i < list.length(); i++) {
                         JSONObject film = list.getJSONObject(i);
 
-                        MovieList movieItems = new MovieList(film);
-                        movieLists.add(movieItems);
+                        MovieItem movieItem = new MovieItem(film);
+                        movieItems.add(movieItem);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -121,6 +105,7 @@ public class MyAsyncTaskLoader extends AsyncTaskLoader<ArrayList<MovieList>> {
                 Log.e("Response", "Failure");
             }
         });
-        return movieLists;
+
+        return movieItems;
     }
 }
